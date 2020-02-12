@@ -112,7 +112,6 @@ function SideBar() {
     );
   return (
     <div>
-      <ModuleLoader lib={library} />;
       <Divider />
       <List>
         <ListItem>

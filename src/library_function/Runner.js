@@ -12,6 +12,7 @@ function Runner(props) {
   } else if (outputValue !== undefined) {
     return <p>{outputValue}</p>;
   }
+  props.callBack();
 }
 
 export default Runner;

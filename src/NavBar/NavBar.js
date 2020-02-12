@@ -111,15 +111,12 @@ function NavBar() {
           <Typography variant="h6" noWrap>
             Source Academy
           </Typography>
+
           <div style={{ textAlign: "right" }}>
             <Typography variant="button" align="right">
               <Configuration />
             </Typography>
           </div>
-
-          <IconButton onClick={handleDrawerClose}>
-            <ChromeReaderModeIcon />
-          </IconButton>
         </Toolbar>
       </AppBar>
 
