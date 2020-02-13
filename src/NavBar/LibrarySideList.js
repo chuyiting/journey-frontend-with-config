@@ -15,17 +15,17 @@ function LibrarySideList(props) {
           </IconButton>
         </ListItem>
         <ListItem>
-          <IconButton onClick={props.callBack("Runes")}>
+          <IconButton onClick={props.callBack("RUNES")}>
             <ListItemText align="right" primary={"RUNES"} />
           </IconButton>
         </ListItem>
         <ListItem>
-          <IconButton onClick={props.callBack("Curves")}>
+          <IconButton onClick={props.callBack("CURVES")}>
             <ListItemText align="right" primary={"CURVES"} />
           </IconButton>
         </ListItem>
         <ListItem>
-          <IconButton onClick={props.callBack("Sounds")}>
+          <IconButton onClick={props.callBack("SOUNDS")}>
             <ListItemText align="right" primary={"SOUNDS"} />
           </IconButton>
         </ListItem>
@@ -33,17 +33,17 @@ function LibrarySideList(props) {
       <Divider />
       <List>
         <ListItem>
-          <IconButton onClick={props.callBack("Binarytrees")}>
+          <IconButton onClick={props.callBack("BINARYTREES")}>
             <ListItemText align="right" primary={"BINARYTREES"} />
           </IconButton>
         </ListItem>
         <ListItem>
-          <IconButton onClick={props.callBack("pix&flix")}>
+          <IconButton onClick={props.callBack("PIXNFLIX")}>
             <ListItemText align="right" primary={"PIX&FLIX"} />
           </IconButton>
         </ListItem>
         <ListItem>
-          <IconButton onClick={props.callBack("Machine Learning")}>
+          <IconButton onClick={props.callBack("MACHINELEARNING")}>
             <ListItemText align="right" primary={"MACHINE LEARNING"} />
           </IconButton>
         </ListItem>

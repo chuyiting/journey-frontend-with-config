@@ -1,43 +1,39 @@
 import React from "react";
-import Runner from "./Runner";
 
-function stringFromFile(path) {
-  // private
-  let request = new XMLHttpRequest();
-  request.open("GET", path, false);
-  request.send(null);
-  return request.responseText;
+const BACKEND_STATIC_URL = "http://0.0.0.0:4000/static"
+
+async function getModuleDirList() {
+  return await fetch(`${BACKEND_STATIC_URL}/modules/modules.json`)
+  .then(data => data.json())
+  .then(obj => {
+    if (obj["module_dirs"] === undefined) {
+      throw 'Invalid modules.json: key "module_dirs" is missing';
+    }
+    return obj["module_dirs"];
+  });
 }
 
-function getModuleDirList() {
-  let data = stringFromFile("modules/modules.json");
-  let obj = JSON.parse(data);
-  if (obj["module_dirs"] === undefined) {
-    throw 'Invalid modules.json: key "module_dirs" is missing';
-  }
-  return obj["module_dirs"];
-}
-
-function loadModule(moduleDirList, moduleName, usedSymbols = []) {
-  let dirname = moduleDirList[moduleName];
+async function loadModule(moduleDirList, moduleName, usedSymbols = []) {
+  const dirname = moduleDirList[moduleName];
   if (dirname === undefined) {
     throw "Unknown module: " + moduleName;
   }
-  let modulePath = "modules/" + dirname;
-  let moduleObj = JSON.parse(
-    stringFromFile(modulePath + "/module_config.json")
-  );
-  let sourceFileNames = moduleObj["module_source_files"];
-  let allSymbols = moduleObj["module_symbols"];
-  for (let url of sourceFileNames) {
-    dynamicallyLoadScript(modulePath + "/" + url);
-    blockUnusedSymbols(allSymbols, usedSymbols);
-  }
+  const modulePath = `${BACKEND_STATIC_URL}/modules/${dirname}`
+  await fetch(modulePath + "/module_config.json")
+  .then(data => data.json())
+  .then(moduleObj => {
+    const sourceFileNames = moduleObj["module_source_files"];
+    const allSymbols = moduleObj["module_symbols"];
+    for (const url of sourceFileNames) {
+      dynamicallyLoadScript(modulePath + "/" + url);
+      blockUnusedSymbols(allSymbols, usedSymbols);
+    }
+  })
 }
 
 function dynamicallyLoadScript(url) {
   // private
-  let script = document.createElement("script");
+  const script = document.createElement("script");
   script.src = url;
   script.async = false;
   script.defer = true;
@@ -45,21 +41,21 @@ function dynamicallyLoadScript(url) {
 }
 
 function blockUnusedSymbols(allSymbols, usedSymbols) {
-  let unusedSymbols = allSymbols.filter(x => !usedSymbols.includes(x));
+  const unusedSymbols = allSymbols.filter(x => !usedSymbols.includes(x));
   let scriptText = "";
-  for (let symbol of unusedSymbols) {
+  for (const symbol of unusedSymbols) {
     scriptText += `${symbol} = undefined;\n`;
   }
-  let script = document.createElement("script");
-  script.text = script;
+  const script = document.createElement("script");
+  script.text = scriptText;
   script.async = false;
   document.body.appendChild(script);
 }
 
-function ModuleLoader(props) {
-  const moduleDirList = getModuleDirList();
-  loadModule(moduleDirList, props.lib);
-  return;
+function ModuleLoader(name) {
+  getModuleDirList().then(moduleDirList => {
+    loadModule(moduleDirList, name);
+  });
 }
 
 export default ModuleLoader;
