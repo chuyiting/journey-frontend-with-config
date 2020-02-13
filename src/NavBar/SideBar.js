@@ -73,7 +73,10 @@ function SideBar() {
     if (childData === "NONE") {
       return () => setLibrary("Library");
     } else {
-      return () => setLibrary(childData);
+      return () => {
+        ModuleLoader(childData);
+        setLibrary(childData);
+      }
     }
   };
 
